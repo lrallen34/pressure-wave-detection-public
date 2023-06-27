@@ -2,12 +2,13 @@
 %%% in one sensor to events in another sensor
 % define sensor IDs, timespan to look at, and locations of information on
 % the event thresholds
+addpath(genpath('../'))
 sensor_id = 'eapizero025'; % 'primary' sensor
 %datadir = '/home/disk/ivanova2/RPi_Pressure_Data/';
 datadir = 'C:/Users/lrallen3/rpi_pressure_data/';
 network = 'canada';
 datetime_span = [datetime(2023,2,22,12,0,0), datetime(2023,2,23,12,0,0)];
-plotting_span = [datetime(2023,2,23,1,0,0), datetime(2023,2,23,4,0,0)];
+plotting_span = [datetime(2023,2,23,1,30,0), datetime(2023,2,23,4,0,0)];
 %threshloc = 'C:/Users/lrallen3/pressure_wavelet_means/all_means_asof_20220310.txt';
 threshloc = ['C:/Users/lrallen3/pressure_wavelet_means/' network '_means_asof_20220310.txt'];
 threshmat = readmatrix(threshloc);
@@ -73,17 +74,17 @@ primary_event_trace = primary_extracted_series{1};
 f2 = figure;
 f2.Position = [0 0 960 1080];
 curax = subplot(n_sensors,1,1);
-plot(prim_dtvec, primary_event_trace, 'LineWidth', 2)
+plot(prim_dtvec, primary_event_trace, 'k', 'LineWidth', 2)
 xlim(plotting_span)
 ylabel('hPa')
 grid on
-title(['Reconstructed event in ' sensor_id])
+title(['Extracted event in ' sensor_id])
 curax.FontSize = 14;
 
 for cur_altsensor = 1:length(alt_sensors)
     secondary_event_trace = secondary_extracted_series{cur_altsensor}{1};
     curax = subplot(n_sensors,1,cur_altsensor+1);
-    plot(alt_dtvec{cur_altsensor}, secondary_event_trace, 'LineWidth', 2)
+    plot(alt_dtvec{cur_altsensor}, secondary_event_trace, 'k', 'LineWidth', 2)
     xlim(plotting_span)
     ylabel('hPa')
     grid on
@@ -91,7 +92,7 @@ for cur_altsensor = 1:length(alt_sensors)
     % calculate unshifted correlation
     corrmat_unshiftedtrace = corrcoef(primary_event_trace, secondary_event_trace);
     corr_unshiftedtrace = corrmat_unshiftedtrace(2);
-    title(['Reconstructed event in ' alt_sensors{cur_altsensor} ...
+    title(['Extracted event in ' alt_sensors{cur_altsensor} ...
         '; Shift = 0 s, R = ' num2str(corr_unshiftedtrace)], 'Interpreter', ...
         'none')
     curax.FontSize = 14;
@@ -145,27 +146,32 @@ end
 
 %% Third plot: reconstructed events for both sensors, optimally shifted in time to maximize correlation
 f3 = figure;
-f3.Position = [0 0 960 1080];
+f3.Position = [0 0 1000 900];
 curax = subplot(n_sensors,1,1);
-plot(datetime_vec, primary_event_trace, 'LineWidth', 2)
+plot(datetime_vec, primary_event_trace, 'k', 'LineWidth', 2)
 xlim(plotting_span)
 ylabel('hPa')
 grid on
-title(['Reconstructed event in ' sensor_id])
-curax.FontSize = 14;
+title(['Extracted event in ' sensor_id])
+curax.FontSize = 12;
 
 for cur_altsensor = 1:length(alt_sensors)
     curax = subplot(n_sensors,1,cur_altsensor+1);
     plot(alt_datetime_vec{cur_altsensor}, ...
-        secondary_extracted_series{cur_altsensor}{1}, 'LineWidth', 2)
-    xlim(plotting_span + seconds(delaytime{cur_altsensor}))
+        secondary_extracted_series{cur_altsensor}{1}, ...
+        'LineWidth', 2, 'Color', [166 118 29]/255)
+    hold on
+    plot(alt_datetime_vec{cur_altsensor} - seconds(delaytime{cur_altsensor}), ...
+        secondary_extracted_series{cur_altsensor}{1}, 'k', 'LineWidth', 2)
+    xlim(plotting_span)
     ylabel('hPa')
     grid on
-    title(['Reconstructed event in ' alt_sensors{cur_altsensor} ...
-        '; Shift = ' char(duration(0, 0, delaytime{cur_altsensor})) ...
+    title(['Extracted event in ' alt_sensors{cur_altsensor} ...
+        '; Shift = ' char(duration(0, 0, -delaytime{cur_altsensor})) ...
         ', R = ' num2str(optimal_crosscorr_final{cur_altsensor})], ...
         'Interpreter', 'none')
-    curax.FontSize = 14;
+    curax.FontSize = 12;
+    legend('Original', 'Shifted')
 end
 
 print(f3, '-r300', 'C:/Users/lrallen3/NCSU/writeups/pressurewaveletpaper/figures/reconstructedtraces_shifted', '-dpng')
