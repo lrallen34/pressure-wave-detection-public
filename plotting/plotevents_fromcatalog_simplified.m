@@ -126,7 +126,7 @@ for curevent = 1:length(eventcatalog)
         else
             num_cols = 3;
         end
-        set(tracefig, 'defaultAxesColorOrder', [0 0 0; 0.5 0.5 0.5])
+        set(tracefig, 'defaultAxesColorOrder', [0 0 0; 0 0.447 0.741])
         tracefig.Position = tracefig.Position .* [1 1 4 1.3*ceil(num_panels/num_cols)];
 
         ii = 1;
@@ -194,7 +194,7 @@ for curevent = 1:length(eventcatalog)
             hold on
             yyaxis right
             ylabel('Total pressure (hPa)')
-            plot(sensor_times, fulltrace_to_plot, '--', 'LineWidth', 2)
+            plot(sensor_times, fulltrace_to_plot, 'LineWidth', 2)
             curax.FontSize = 20;
             
 
