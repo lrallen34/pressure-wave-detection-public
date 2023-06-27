@@ -3,6 +3,7 @@
 
 catalogs_loc = '/home/disk/zathras/lukea41/pressure_event_catalogs_coef5_iterative_watersheds_allpairs/**';
 datadir = '/home/disk/ivanova2/RPi_Pressure_Data/';
+addpath(genpath('../'))
 
 dirstruct = dir(catalogs_loc);
 axisflag = 'centered';
