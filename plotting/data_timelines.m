@@ -5,8 +5,8 @@
 network = 'raleigh';
 % read in the list of sites for that network and get the IDs that have
 % defined coordinates
-sensorloc = ['/home/disk/zathras/lukea41/sensor_lists/' network '_sites.txt'];
-datadir = '/home/disk/ivanova2/RPi_Pressure_Data/';
+sensorloc = ['../' network '_sites.txt'];
+datadir = '/path/to/data/'; % FILLIN
 sensormat = readmatrix(sensorloc, 'OutputType', 'char');
 sensorlats = str2double(sensormat(:, 2));
 all_ids = sensormat(~isnan(sensorlats), 1);

@@ -1,16 +1,17 @@
 %%% Script for plotting all pressure traces for a given network together
 network = 'ny';
 datetime_span = [datetime(2022,2,4,0,0,0), datetime(2022,2,5,0,0,0)];
-datadir = '/home/disk/ivanova2/RPi_Pressure_Data/';
+datadir = '/path/to/data'; % FILLIN
+outdir = ['/path/to/pressuretraces/' network]; % FILLIN: directory to output .png files to
 
-sensorloc = ['/home/disk/zathras/lukea41/sensor_lists/' network '_sites.txt'];
+sensorloc = [network '_sites.txt'];
 sensormat = readmatrix(sensorloc, 'OutputType', 'char');
 sensor_names = sensormat(:, 1);
 legend_entries = sensor_names;
 sensor_lats = str2double(sensormat(:, 2));
 sensor_lons = str2double(sensormat(:, 3));
 
-sensor_colormat = readtable('post_processing/sensor_rgbcodes.txt');
+sensor_colormat = readtable('sensor_rgbcodes.txt');
 sensor_colormat.Properties.VariableNames = {'sensor', 'red', 'green', 'blue'};
 
 
@@ -34,7 +35,7 @@ title(['Pressure traces for ' network])
 l=legend(sensor_names, 'Location', 'best');
 l.Interpreter = 'none';
 grid on
-makeneededdirs(['/home/disk/zathras/lukea41/pressuretraces/' network])
-print('-r300', f, ['/home/disk/zathras/lukea41/pressuretraces/' network ...
-    '/' datestr(datetime_span(1), 'yyyymmddHHMM') '_' ...
-    datestr(datetime_span(2), 'yyyymmddHHMM')], '-dpng')
+makeneededdirs(outdir)
+print('-r300', f, [outdir ...
+    '/' char(datetime_span(1), 'yyyymmddHHMM') '_' ...
+    char(datetime_span(2), 'yyyymmddHHMM')], '-dpng')

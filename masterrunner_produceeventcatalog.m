@@ -9,10 +9,10 @@ yr = 2023; % define a year
 mnth = 5; % define a month
 datetime_span = [datetime(yr,mnth,1,0,0,0)-days(1), ...
     datetime(yr,mnth,1,0,0,0)+calmonths(1)+days(1)]; % leave as is; defined based on assigned year and month
-datadir = '/home/disk/ivanova2/RPi_Pressure_Data/'; % define the data location
+datadir = 'path/to/data'; % FILLIN: define the data location
 % after running calcthresh.m and outputting the mean wavelet powers, define
 % threshloc as that output file
-threshloc = ['/home/disk/zathras/lukea41/pressure_wavelet_means/' network '_means_asof_20220310.txt'];
+threshloc = 'path/to/calcthresh/output.txt'; % FILLIN
 
 % the mean wavelet power file is then read in
 threshmat = readmatrix(threshloc);
@@ -29,20 +29,18 @@ name_of_catalog = [num2str(yr) num2str(mnth, '%02i') '_coef' ...
     num2str(coef) '_iterative_watersheds_allpairs']; % name of output .mat file
 
 % define output directory for the .mat event catalog file
-catalog_outdir = ['/home/disk/zathras/lukea41/pressure_event_catalogs_coef' ...
-    num2str(coef) '_iterative_watersheds_allpairs/' network '/'];
+catalog_outdir = ['path/to/catalogs/' network '/']; %FILLIN
 % define output directory for the .xlsx event spreadsheet file
-spreadsheet_outdir = ['/home/disk/zathras/lukea41/pressure_event_spreadsheets_coef' ...
-    num2str(coef) '_iterative_watersheds_allpairs/' network '/'];
+spreadsheet_outdir = ['/path/to/spreadsheets/' network '/']; % FILLIN
 
 % define the location of the file containing sensor names and lat/lon
 % coordinates
-sensorloc = ['/home/disk/zathras/lukea41/sensor_lists/' network '_sites.txt'];
+sensorloc = [network '_sites.txt'];
 
 % define output directory for plots
 axisflag = 'centered';
-outdir_plots = ['/home/disk/zathras/lukea41/pressure_crosssensor_plots_' ...
-    axisflag 'axes/' name_of_catalog '/'];
+outdir_plots = ['/path/to/plots/' ...
+    axisflag 'axes/' name_of_catalog '/']; % FILLIN
 minsensors = 3; % minimum number of sensors which must capture an event in order to plot it
 makeneededdirs(catalog_outdir, spreadsheet_outdir, outdir_plots)
 

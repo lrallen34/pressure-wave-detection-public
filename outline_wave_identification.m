@@ -8,7 +8,7 @@ addpath(genpath(pwd)) % alternatively, running init.m also does this
 %% (1) Reading in the data
 % Need to define the path to the data, the sensor ID we want, and the
 % datetime span we want to read data for
-data_path = '/home/disk/ivanova2/RPi_Pressure_Data/';
+data_path = '/path/to/data'; %FILLIN
 sensor_id = 'eapizero014';
 datetime1 = datetime(2022,2,4,17,30,0);
 datetime2 = datetime(2022,2,4,22,0,0);
@@ -71,7 +71,7 @@ set(gca,'YScale','log')
 % Pressure tends to vary more at longer scales, so to identify relatively
 % wavy portions of the pressure trace, it is useful to divide by the 
 % average wavelet energy at each period from the full dataset
-means_file = '/home/disk/zathras/lukea41/pressure_wavelet_means/raleigh_means.txt';
+means_file = 'ny_means.txt';
 means_array = readmatrix(means_file);
 period_vec = means_array(:, 1);
 means_vec = means_array(:, 2);
