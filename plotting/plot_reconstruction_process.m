@@ -178,8 +178,8 @@ xlim(datetime_span)
 grid on
 ax5b.FontSize = 14;
 ax5c = subplot(3,1,3);
-plot(datetime_vec, pres_rec, 'LineWidth', 2)
-title('Reconstructed Event')
+plot(datetime_vec, pres_rec, 'k', 'LineWidth', 2)
+title('Extracted Event')
 ylabel('Pressure (hPa)')
 xlim(datetime_span)
 grid on
