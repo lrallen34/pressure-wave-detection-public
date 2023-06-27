@@ -20,7 +20,7 @@ rebound_end = datetime(2022,1,16,7,45,0);
 
 % Plot
 f = figure('units','normalized','outerposition',[0 0 1 1]);
-set(f, 'defaultAxesColorOrder', [0 0 0; 0.5 0.5 0.5])
+set(f, 'defaultAxesColorOrder', [0 0 0; 0 0.447 0.741])
 ax = subplot(2,1,1);
 plot(inbound_datetimes, inbound_eventtrace, 'LineWidth', 2)
 grid on
@@ -30,7 +30,7 @@ t.Interpreter = 'none';
 ylabel('Extracted event (hPa)')
 hold on
 yyaxis right
-plot(inbound_datetimes, inbound_fulltrace, '--', 'LineWidth', 2)
+plot(inbound_datetimes, inbound_fulltrace, 'LineWidth', 2)
 ylabel('Total pressure (hPa)')
 ax.FontSize = figure_fontsize;
 
@@ -51,7 +51,7 @@ title('Rebound (ii) - eapizero018')
 ylabel('Extracted event (hPa)')
 hold on
 yyaxis right
-plot(rebound_datetimes, rebound_fulltrace, '--', 'LineWidth', 2)
+plot(rebound_datetimes, rebound_fulltrace, 'LineWidth', 2)
 ylabel('Total pressure (hPa)')
 ax.FontSize = figure_fontsize;
 
