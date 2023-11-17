@@ -108,6 +108,7 @@ wavelet_transform(isnan(wavelet_transform)) = 0;
 % transform does not exceed 2 or the number of iterations has reached
 % max_events
 event_centers = [];
+amplitude_hPa = [];
 min_period = duration();
 center_period = duration();
 max_period = duration();
@@ -224,6 +225,7 @@ while wt_max > 2 && (cur_event < max_events || max_events == 0)
     wt_rec = wavelet_transform;
     wt_rec(~omega_curevent) = 0;
     reconstructed_series{cur_event} = icwt(wt_rec, 'amor');
+    amplitude_hPa(cur_event) = max(reconstructed_series{cur_event} - min(reconstructed_series{cur_event}));
 
     % step 4
     fullTrace = fullTrace - reconstructed_series{cur_event}';
@@ -252,16 +254,16 @@ while wt_max > 2 && (cur_event < max_events || max_events == 0)
 end
 
 % create a table of basic properties of each event
-varnames = {'MinPeriod', 'CenterPeriod', 'MaxPeriod', ...
+varnames = {'Amplitude', 'MinPeriod', 'CenterPeriod', 'MaxPeriod', ...
     'StartTime', 'CenterTime', 'EndTime', ...
     'MinPeriod_PeakRegion', 'MaxPeriod_PeakRegion'};
 
 if isempty(omega_pixels)
-    events_table = table([], [], [], [], [], [], [], [], 'VariableNames', varnames);
+    events_table = table([], [], [], [], [], [], [], [], [], 'VariableNames', varnames);
 else
-    events_table = table(min_period', center_period', max_period', ...
-        event_start', event_center', event_end', minperiod_peakregion', ...
-        maxperiod_peakregion', 'VariableNames', varnames);
+    events_table = table(amplitude_hPa(:), min_period(:), center_period(:), max_period(:), ...
+        event_start(:), event_center(:), event_end(:), minperiod_peakregion(:), ...
+        maxperiod_peakregion(:), 'VariableNames', varnames);
 end
 
 % get boundaries of each event region
