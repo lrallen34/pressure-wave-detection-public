@@ -42,3 +42,4 @@ oldcode/
 
 # testing output
 testing/
+*.csv
